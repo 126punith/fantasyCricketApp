@@ -1,0 +1,22 @@
+const colorCode = {
+  white: '#fff',
+  black: '#000',
+  primary: '#010A43',
+  buttonBg: '#212A6B',
+  buttonTitle: '#426DDC',
+  border: '#464E8A',
+  sheetBg: '#10194E',
+  notch: '#4E589F',
+  name: '#858EC5',
+  received: '#1DC7AC',
+  failed: '#FE4A54',
+  sent: '#FAAD39',
+  midnightBlue: '#192259',
+  shinKanSenWhite: '#D7C9C9',
+  pink: '#FF2E63',
+  inputBg: '#1DC7AC',
+  ring: '#0D164B',
+  drWhile: '#fafafa',
+  greenBorder: '#1DC76B',
+};
+export default colorCode;
