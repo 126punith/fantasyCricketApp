@@ -7,11 +7,10 @@ import {NavigationContainer} from '@react-navigation/native';
 
 const App = () => {
   return (
-    // <GestureHandlerRootView style={{flex: 1}}>
     <View style={styles.container}>
       <StatusBar
         backgroundColor={colorCode.primary}
-        barStyle={'light-content'}
+        barStyle={'dark-content'}
       />
       <SafeAreaProvider>
         <NavigationContainer>
@@ -19,7 +18,6 @@ const App = () => {
         </NavigationContainer>
       </SafeAreaProvider>
     </View>
-    // </GestureHandlerRootView>
   );
 };
 const styles = StyleSheet.create({

@@ -7,6 +7,14 @@ class PlayersStore {
   playersArray = [];
   matchData = null;
   MyTeams = [];
+  team_One_Array = [];
+  team_Two_Array = [];
+  teams_Name = [];
+  total_Batsman = [];
+  total_WK = [];
+  total_AllRounders = [];
+  total_Bowler = [];
+  selectedPlayers = [];
 
   constructor() {
     makeAutoObservable(this, {}, {autoBind: true});
@@ -18,6 +26,19 @@ class PlayersStore {
     );
     console.log(response, 'getPlayersData');
     this.playersArray = response;
+    this.team_One_Array = response.filter(
+      item => item.team_short_name !== 'MS',
+    );
+    this.team_Two_Array = response.filter(
+      item => item.team_short_name !== 'PS',
+    );
+    this.total_Batsman = response.filter(item => item.role === 'Batsman');
+
+    this.total_WK = response.filter(item => item.role === 'Wicket-Keeper');
+    this.total_AllRounders = response.filter(
+      item => item.role === 'All-Rounder',
+    );
+    this.total_Bowler = response.filter(item => item.role === 'Bowler');
   }
 
   async getMatchData() {

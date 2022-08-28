@@ -8,7 +8,7 @@ export async function callRemoteMethod(
   data,
   successKey = true,
 ) {
-  console.log(`data: ${data} \n URL: ${endpoint} sunny`);
+  // console.log(`data: ${data} \n URL: ${endpoint} sunny`);
 
   const method = type.toLowerCase();
   try {

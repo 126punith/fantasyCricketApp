@@ -12,7 +12,6 @@ const MatchesScreen = props => {
   const {navigation} = props;
 
   const getData = async () => {
-    // const playersResponse = await getPlayersData();
     const matchResponse = await getMatchData();
 
     console.log(matchResponse, 'playersResponse');

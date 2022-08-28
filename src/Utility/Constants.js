@@ -4,6 +4,7 @@ module.exports = {
     MATCHES: 'Matches',
     MY_TEAM: 'MyTeam',
     PICK_PLAYERS: 'PickPlayers',
+    SAVE_MY_TEAM: 'SaveMyTeam',
   },
   URL: {
     PLAYERS: `${ENV.API_HOST}/task/fantasy-sports/Get_All_Players_of_match.json`,
