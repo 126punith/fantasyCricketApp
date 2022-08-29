@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SCREENS} from '../Utility/Constants';
 import PlayersStore from '../store/PlayersStore';
 import CustomButton from '../components/CustomButton';
@@ -19,7 +19,7 @@ const PickPlayerScreen = props => {
   // console.log(props, 'props');
 
   const getPlayersHandler = async () => {
-    const Players = await getPlayersData();
+    await getPlayersData();
 
     // console.log(Players, 'playersResponse');
   };
@@ -27,7 +27,9 @@ const PickPlayerScreen = props => {
   const [numbersOfBowlers, setNumbersOfbowlers] = useState(0);
   const [numbersOfWC, setNumbersOfWC] = useState(0);
   const [numbersOfAll, setNumbersOfAll] = useState(0);
-
+  const [credits, setCredits] = useState(100);
+  const [teamOne, setTeamOne] = useState(0);
+  const [teamTwo, setTeamTwo] = useState(0);
   const [players, setPlayers] = useState({
     teamNumber: 1,
     playerData: [],
@@ -70,41 +72,48 @@ const PickPlayerScreen = props => {
       showAlert('select 0-4 All Rounder');
       return;
     }
-    const checkTeamNum1 = players.playerData.filter(
-      item => item.team_short_name === 'PS',
-    );
-    const checkTeamNum2 = players.playerData.filter(
-      item => item.team_short_name === 'MS',
-    );
-    if (checkTeamNum1 > 7) {
-      showAlert('sdfsdf');
-      return;
-    } else if (checkTeamNum2 > 7) {
-      showAlert('sdfsdf');
-      return;
-    }
 
     setPlayers(prev => ({
       ...prev,
       playerData: [...prev.playerData, itemData],
     }));
+
     if (itemData.role === 'Batsman') {
       setNumbersOfBatsman(numOfPlayers + 1);
+      setCredits(prev => prev - itemData.event_player_credit);
+      if (itemData.team_short_name === t1_short_name) {
+        setTeamOne(prev => prev + 1);
+      } else {
+        setTeamTwo(prev => prev + 1);
+      }
     } else if (itemData.role === 'Bowler') {
       setNumbersOfbowlers(numbersOfBowlers + 1);
+      setCredits(prev => prev - itemData.event_player_credit);
+      if (itemData.team_short_name === t1_short_name) {
+        setTeamOne(prev => prev + 1);
+      } else {
+        setTeamTwo(prev => prev + 1);
+      }
     } else if (itemData.role === 'Wicket-Keeper') {
       setNumbersOfWC(numbersOfWC + 1);
+      setCredits(prev => prev - itemData.event_player_credit);
+      if (itemData.team_short_name === t1_short_name) {
+        setTeamOne(prev => prev + 1);
+      } else {
+        setTeamTwo(prev => prev + 1);
+      }
     } else if (itemData.role === 'All-Rounder') {
       setNumbersOfAll(numbersOfAll + 1);
+      setCredits(prev => prev - itemData.event_player_credit);
+      if (itemData.team_short_name === t1_short_name) {
+        setTeamOne(prev => prev + 1);
+      } else {
+        setTeamTwo(prev => prev + 1);
+      }
     }
   };
 
   const totalNumberOfPlayers = players?.playerData.length;
-
-  // const isSelected = useMemo(() => {
-  //   return players.playerData.filter(item => item.id === itemData.item.id)
-  //     .length;
-  // }, []);
 
   const removePlayerHandler = itemData => {
     const newPlayerData = players.playerData.filter(
@@ -115,30 +124,78 @@ const PickPlayerScreen = props => {
 
     if (itemData.role === 'Batsman') {
       setNumbersOfBatsman(prev => prev - 1);
+      setCredits(prev => prev + itemData.event_player_credit);
+      if (itemData.team_short_name === t1_short_name) {
+        setTeamOne(prev => prev - 1);
+      } else {
+        setTeamTwo(prev => prev - 1);
+      }
     } else if (itemData.role === 'Bowler') {
       setNumbersOfbowlers(prev => prev - 1);
+      setCredits(prev => prev + itemData.event_player_credit);
+      if (itemData.team_short_name === t1_short_name) {
+        setTeamOne(prev => prev - 1);
+      } else {
+        setTeamTwo(prev => prev - 1);
+      }
     } else if (itemData.role === 'Wicket-Keeper') {
       setNumbersOfWC(prev => prev - 1);
+      setCredits(prev => prev + itemData.event_player_credit);
+      if (itemData.team_short_name === t1_short_name) {
+        setTeamOne(prev => prev - 1);
+      } else {
+        setTeamTwo(prev => prev - 1);
+      }
     } else if (itemData.role === 'All-Rounder') {
       setNumbersOfAll(prev => prev - 1);
+      setCredits(prev => prev + itemData.event_player_credit);
+      if (itemData.team_short_name === t1_short_name) {
+        setTeamOne(prev => prev - 1);
+      } else {
+        setTeamTwo(prev => prev - 1);
+      }
     }
   };
 
   const proceedHandler = () => {
-    if (players.playerData.length === 10) {
-      alert();
+    const checkTeamNum1 = players.playerData.filter(
+      item => item.team_short_name === t1_short_name,
+    ).length;
+    const checkTeamNum2 = players.playerData.filter(
+      item => item.team_short_name === t2_short_name,
+    ).length;
+    console.log(
+      ` checknum1 = ${checkTeamNum1} ,checkTeamNum2 = ${checkTeamNum2} `,
+    );
+    if (players.playerData.length < 11) {
+      showAlert(` select max 11 players `);
+      return;
+    }
+    if (players.playerData.length > 11) {
+      showAlert(` select min 11 players `);
+      return;
+    }
+    if (checkTeamNum1 > 7) {
+      showAlert(`You can select only max 7 ${t1_short_name} `);
+      return;
+    } else if (checkTeamNum2 > 7) {
+      showAlert(`You can select only max 7 ${t2_short_name} `);
       return;
     }
     if (numbersOfBatsman < 2) {
-      showAlert('sdf');
+      showAlert('select 3-7 Batsman');
       return;
     }
     if (numbersOfBowlers < 2) {
-      showAlert('sdf');
+      showAlert('select 3-7 Bowlers');
       return;
     }
     if (numbersOfWC < 1) {
-      showAlert('sdf');
+      showAlert('select 1-5 Wicket Keepers');
+      return;
+    }
+    if (credits < 0) {
+      alert("You don't have enough credits");
       return;
     }
 
@@ -385,7 +442,7 @@ const PickPlayerScreen = props => {
               alignItems: 'center',
               borderWidth: 1,
             }}>
-            <Text style={styles.BottomText}>0</Text>
+            <Text style={styles.BottomText}>{teamOne}</Text>
             <Text style={styles.BottomText}>{t1_short_name}</Text>
           </View>
           <View
@@ -395,7 +452,7 @@ const PickPlayerScreen = props => {
               alignItems: 'center',
               borderWidth: 1,
             }}>
-            <Text style={styles.BottomText}>0</Text>
+            <Text style={styles.BottomText}>{teamTwo}</Text>
             <Text style={styles.BottomText}>{t2_short_name}</Text>
           </View>
           <View
@@ -405,7 +462,7 @@ const PickPlayerScreen = props => {
               alignItems: 'center',
               borderWidth: 1,
             }}>
-            <Text style={styles.BottomText}>100</Text>
+            <Text style={styles.BottomText}>{credits}</Text>
             <Text style={styles.BottomText}>Cr Left</Text>
           </View>
         </View>

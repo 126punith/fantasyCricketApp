@@ -8,21 +8,31 @@ import {SCREENS} from '../Utility/Constants';
 import MatchsBoard from '../components/MatchsBoard';
 
 const MatchesScreen = props => {
-  const {matchData, getMatchData} = PlayersStore;
+  const {
+    matchData,
+    getMatchData,
+    t1_image,
+    t2_image,
+    event_name,
+    t1_short_name,
+    t2_short_name,
+    getPlayersData,
+  } = PlayersStore;
   const {navigation} = props;
 
   const getData = async () => {
     const matchResponse = await getMatchData();
+    await getPlayersData();
 
     console.log(matchResponse, 'playersResponse');
   };
+
   useEffect(() => {
     getData();
   }, []);
 
   console.log(matchData, 'Match Info');
-  const {t1_image, t2_image, event_name, t1_short_name, t2_short_name} =
-    matchData?.matches?.cricket[0];
+
   return (
     <SafeAreaView>
       <View style={[GlobalStyles.alignCenter]}>
@@ -37,31 +47,6 @@ const MatchesScreen = props => {
           t2_short_name={t2_short_name}
           navigation={navigation}
         />
-        {/* <TouchableOpacity
-          style={styles.matchsContainer}
-          onPress={() => {
-            console.log(navigation.navigate(SCREENS.MY_TEAM));
-          }}>
-          <Image
-            source={{
-              uri: t1_image,
-            }}
-            style={styles.image}
-          />
-          <View>
-            <Text style={styles.eventText}>{event_name}</Text>
-            <Text style={styles.versusText}>
-              {t1_short_name} <Text style={styles.subText}>vs</Text>{' '}
-              {t2_short_name}
-            </Text>
-          </View>
-          <Image
-            source={{
-              uri: t2_image,
-            }}
-            style={styles.image}
-          />
-        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );

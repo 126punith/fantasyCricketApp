@@ -1,9 +1,13 @@
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import CustomButton from '../components/CustomButton';
+import PlayersStore from '../store/PlayersStore';
+import {observer} from 'mobx-react-lite';
+import {SCREENS} from '../Utility/Constants';
 
 const SaveMyTeam = props => {
   const {route, navigation} = props;
+  const {setMyTeam, MyTeams} = PlayersStore;
 
   console.log(route, 'route');
   const {t1_short_name, t2_short_name, players} = route.params;
@@ -11,11 +15,37 @@ const SaveMyTeam = props => {
 
   const modifiedArray = players.playerData.map(item => ({
     ...item,
-    cc: false,
-    vc: false,
+    C: false,
+    Vc: false,
   }));
+  var myTeam = {};
+  const [myPlayers, setMyPlayers] = useState(modifiedArray);
+  const removePlayerHandler = (itemData, key) => {};
 
-  const saveHandler = () => {};
+  const [capitan, setCapitan] = useState({});
+  const [viceCapitan, setViceCapitan] = useState({});
+
+  const playerHandler = (itemData, key) => {
+    if (key === 'C') {
+      setCapitan(itemData);
+    }
+    if (key === 'Vc') {
+      setViceCapitan(itemData);
+    }
+    console.log(modifiedArray, 'Myplayers');
+  };
+  const saveHandler = () => {
+    myTeam['capitan'] = capitan;
+    myTeam['viceCapitan'] = viceCapitan;
+    myTeam['t1_short_name'] = t1_short_name;
+    myTeam['t2_short_name'] = t2_short_name;
+    myTeam['selected_Team'] = modifiedArray;
+    setMyTeam(myTeam);
+    navigation.navigate(SCREENS.MY_TEAM, {
+      t1_short_name,
+      t2_short_name,
+    });
+  };
   return (
     <SafeAreaView
       style={{
@@ -88,7 +118,7 @@ const SaveMyTeam = props => {
           </Text>
           <Text
             style={{
-              marginRight: '24%',
+              marginRight: '20%',
               fontSize: 14,
               fontWeight: '700',
             }}>
@@ -100,24 +130,14 @@ const SaveMyTeam = props => {
             borderWidth: 1,
           }}>
           <FlatList
-            data={modifiedArray}
+            data={myPlayers}
             keyExtractor={item => item.id}
             renderItem={itemData => {
-              // let isSelected = players.playerData.filter(
-              //   item => item.id === itemData.item.id,
-              // ).length;
               return (
                 <View
                   style={{
                     borderWidth: 1,
-                  }}
-                  // disabled={isSelected}
-                  // onPress={() =>
-                  // isSelected
-                  //   ? removePlayerHandler(itemData.item)
-                  //   : playerHandler(itemData.item)
-                  // }
-                >
+                  }}>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -138,8 +158,6 @@ const SaveMyTeam = props => {
                     <Text
                       style={[
                         {
-                          // position: 'absolute',
-                          // right: 70,
                           marginHorizontal: 5,
                         },
                         styles.smallTitleText,
@@ -151,35 +169,41 @@ const SaveMyTeam = props => {
                       style={[
                         {
                           marginHorizontal: 5,
-                          // position: 'absolute',
-                          // right: 50,
                         },
                         styles.smallTitleText,
                       ]}>
                       {itemData.item.event_player_credit}
                     </Text>
-                    <CustomButton>
+                    <CustomButton
+                      disabled={
+                        itemData.item.id === capitan.id ||
+                        itemData.item.id === viceCapitan.id
+                      }
+                      onPress={() => playerHandler(itemData.item, 'C')}>
                       <Text
                         style={{
                           padding: 5,
-                          backgroundColor: '#eee',
+                          backgroundColor:
+                            itemData.item.id === capitan.id ? 'pink' : '#eee',
                           marginHorizontal: 5,
-
-                          // position: 'absolute',
-                          // right: 30,
                         }}>
                         C
                       </Text>
                     </CustomButton>
-                    <CustomButton>
+                    <CustomButton
+                      disabled={
+                        itemData.item.id === capitan.id ||
+                        itemData.item.id === viceCapitan.id
+                      }
+                      onPress={() => playerHandler(itemData.item, 'Vc')}>
                       <Text
                         style={{
                           padding: 5,
-                          backgroundColor: '#eee',
-                          marginHorizontal: 10,
-
-                          // position: 'absolute',
-                          // right: 8,
+                          backgroundColor:
+                            itemData.item.id === viceCapitan.id
+                              ? 'pink'
+                              : '#eee',
+                          marginHorizontal: 5,
                         }}>
                         VC
                       </Text>
@@ -217,7 +241,7 @@ const SaveMyTeam = props => {
   );
 };
 
-export default SaveMyTeam;
+export default observer(SaveMyTeam);
 
 const styles = StyleSheet.create({
   mainTitileContainer: {
