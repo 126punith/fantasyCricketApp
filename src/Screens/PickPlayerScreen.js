@@ -182,11 +182,11 @@ const PickPlayerScreen = props => {
       showAlert(`You can select only max 7 ${t2_short_name} `);
       return;
     }
-    if (numbersOfBatsman < 2) {
+    if (numbersOfBatsman < 3) {
       showAlert('select 3-7 Batsman');
       return;
     }
-    if (numbersOfBowlers < 2) {
+    if (numbersOfBowlers < 3) {
       showAlert('select 3-7 Bowlers');
       return;
     }

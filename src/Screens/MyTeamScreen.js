@@ -42,9 +42,10 @@ const MyTeamScreen = props => {
       </View>
       <View
         style={{
-          position: 'absolute',
-          left: 20,
-          top: '10%',
+          // position: 'absolute',
+          marginTop: 20,
+          // left: 20,
+          // top: '10%',
         }}>
         <Text
           style={{
