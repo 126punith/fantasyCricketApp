@@ -1,4 +1,11 @@
-import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import CustomButton from '../components/CustomButton';
 import PlayersStore from '../store/PlayersStore';
@@ -12,7 +19,8 @@ const SaveMyTeam = props => {
   console.log(route, 'route');
   const {t1_short_name, t2_short_name, players} = route.params;
   console.log(players.playerData, 'punith');
-
+  const {height: deviceHeight} = Dimensions.get('window');
+  console.log(deviceHeight, 'deviceHeight');
   const modifiedArray = players.playerData.map(item => ({
     ...item,
     C: false,
@@ -47,11 +55,8 @@ const SaveMyTeam = props => {
     });
   };
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        alignItems: 'center',
-      }}>
+    <>
+      <SafeAreaView />
       <View style={styles.mainTitileContainer}>
         <Text style={styles.titleText}>
           {t1_short_name} <Text style={styles.versusText}>vs</Text>{' '}
@@ -76,8 +81,9 @@ const SaveMyTeam = props => {
       <View
         style={{
           width: '95%',
-          height: 395,
+          height: deviceHeight < 700 ? '50%' : '60%',
           marginTop: 30,
+          alignSelf: 'center',
         }}>
         <View
           style={{
@@ -132,6 +138,9 @@ const SaveMyTeam = props => {
           <FlatList
             data={myPlayers}
             keyExtractor={item => item.id}
+            style={{
+              maxHeight: '95%',
+            }}
             renderItem={itemData => {
               return (
                 <View
@@ -215,11 +224,13 @@ const SaveMyTeam = props => {
           />
         </View>
       </View>
+
       <View
         style={{
           position: 'absolute',
           bottom: 60,
           width: '100%',
+          backgroundColor: '#eee',
           // marginTop: 30,
         }}>
         <CustomButton
@@ -237,7 +248,7 @@ const SaveMyTeam = props => {
           </Text>
         </CustomButton>
       </View>
-    </SafeAreaView>
+    </>
   );
 };
 

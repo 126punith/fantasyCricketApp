@@ -1,5 +1,6 @@
 import {
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -29,11 +30,8 @@ const MyTeamScreen = props => {
 
   console.log(MyTeams, 'MyTeams Data');
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        alignItems: 'center',
-      }}>
+    <>
+      <SafeAreaView />
       <View style={styles.mainTitileContainer}>
         <Text style={styles.titleText}>
           {t1_short_name} <Text style={styles.versusText}>vs</Text>{' '}
@@ -42,10 +40,7 @@ const MyTeamScreen = props => {
       </View>
       <View
         style={{
-          // position: 'absolute',
           marginTop: 20,
-          // left: 20,
-          // top: '10%',
         }}>
         <Text
           style={{
@@ -55,86 +50,93 @@ const MyTeamScreen = props => {
           My Teams
         </Text>
       </View>
-      {myMainPlayer
-        ? myMainPlayer.map((item, index) => {
-            console.log(item, 'Punith');
+      <ScrollView>
+        {myMainPlayer
+          ? myMainPlayer.map((item, index) => {
+              console.log(item, 'Punith');
 
-            let {capitan, viceCapitan} = item;
+              let {capitan, viceCapitan} = item;
 
-            return (
-              <View
-                style={{
-                  width: '80%',
-                  height: 150,
-                  borderWidth: 2,
-                  marginTop: 50,
-                }}>
-                <Text
-                  style={{
-                    marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
-                    fontSize: 18,
-                    fontWeight: '700',
-                  }}>
-                  Team {index + 1}
-                </Text>
+              return (
                 <View
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    marginLeft: 10,
-                    marginBottom: 15,
+                    width: '80%',
+                    height: 130,
+                    borderWidth: 2,
+                    marginTop: 50,
+                    alignSelf: 'center',
                   }}>
                   <Text
                     style={{
-                      fontSize: 14,
-                      fontWeight: '700',
-                    }}>
-                    {capitan.short_name}
-                  </Text>
-                  <Text
-                    style={{
-                      padding: 2,
-                      backgroundColor: '#a8a7a5',
+                      marginTop: 10,
                       marginLeft: 10,
-                      fontSize: 14,
+                      marginBottom: 10,
+                      fontSize: 18,
                       fontWeight: '700',
                     }}>
-                    C
+                    Team {index + 1}
                   </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    marginLeft: 10,
-                  }}>
-                  <Text
+                  <View
                     style={{
-                      fontSize: 14,
-                      fontWeight: '700',
-                    }}>
-                    {viceCapitan.short_name}
-                  </Text>
-                  <Text
-                    style={{
-                      padding: 2,
-                      backgroundColor: '#a8a7a5',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
                       marginLeft: 10,
-                      fontSize: 14,
-                      fontWeight: '700',
+                      marginBottom: 15,
                     }}>
-                    VC
-                  </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '700',
+                      }}>
+                      {capitan.short_name}
+                    </Text>
+                    <Text
+                      style={{
+                        padding: 2,
+                        backgroundColor: '#a8a7a5',
+                        marginLeft: 10,
+                        fontSize: 14,
+                        fontWeight: '700',
+                      }}>
+                      C
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      marginLeft: 10,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '700',
+                      }}>
+                      {viceCapitan.short_name}
+                    </Text>
+                    <Text
+                      style={{
+                        padding: 2,
+                        backgroundColor: '#a8a7a5',
+                        marginLeft: 10,
+                        fontSize: 14,
+                        fontWeight: '700',
+                      }}>
+                      VC
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            );
-          })
-        : null}
-
+              );
+            })
+          : null}
+        <View
+          style={{
+            height: 200,
+          }}
+        />
+      </ScrollView>
       <CustomButton
         style={{
           width: '70%',
@@ -145,7 +147,10 @@ const MyTeamScreen = props => {
           bottom: 30,
           margin: 20,
           position: 'absolute',
-          bottom: 60,
+          bottom: 30,
+          overflow: 'hidden',
+          backgroundColor: '#eee',
+          alignSelf: 'center',
         }}
         onPress={() => {
           navigation.navigate(SCREENS.PICK_PLAYERS, {
@@ -158,7 +163,7 @@ const MyTeamScreen = props => {
           + Add New Team
         </Text>
       </CustomButton>
-    </SafeAreaView>
+    </>
   );
 };
 

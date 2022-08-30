@@ -5,12 +5,15 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {SCREENS} from '../Utility/Constants';
 import PlayersStore from '../store/PlayersStore';
 import CustomButton from '../components/CustomButton';
 import {observer} from 'mobx-react-lite';
+const {height: deviceHeight} = Dimensions.get('window');
 
 const PickPlayerScreen = props => {
   const {getPlayersData, playersArray} = PlayersStore;
@@ -208,11 +211,8 @@ const PickPlayerScreen = props => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        alignItems: 'center',
-      }}>
+    <>
+      <SafeAreaView />
       <View style={styles.mainTitileContainer}>
         <Text style={styles.titleText}>
           {t1_short_name} <Text style={styles.versusText}>vs</Text>{' '}
@@ -291,8 +291,10 @@ const PickPlayerScreen = props => {
         style={{
           width: '95%',
           // borderWidth: 1,
-          height: 295,
+          // height: '40%',
           marginTop: 30,
+          overflow: 'hidden',
+          alignSelf: 'center',
         }}>
         <View
           style={{
@@ -346,6 +348,11 @@ const PickPlayerScreen = props => {
           <FlatList
             data={playersArray}
             keyExtractor={item => item.id}
+            style={{
+              height: deviceHeight < 700 ? '50%' : '60%',
+              // minHeight: '65%',
+              // maxHeight: '70%',
+            }}
             renderItem={itemData => {
               let isSelected = players.playerData.filter(
                 item => item.id === itemData.item.id,
@@ -402,8 +409,9 @@ const PickPlayerScreen = props => {
       <View
         style={{
           position: 'absolute',
-          bottom: 60,
+          bottom: 30,
           width: '100%',
+          backfaceVisibility: 'hidden',
         }}>
         <CustomButton
           style={{
@@ -467,7 +475,7 @@ const PickPlayerScreen = props => {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </>
   );
 };
 
